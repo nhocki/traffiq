@@ -1,6 +1,6 @@
 # Traffiq
 
-`Traffiq` helps you with with your queues so you don't have to.
+`Traffiq` helps you with your queues so you don't have to.
 
 ![Boston Traffic](http://statescoop.com/wp-content/uploads/2014/04/boston-traffic.jpg)
 
