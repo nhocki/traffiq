@@ -6,10 +6,10 @@ require 'traffiq/version'
 Gem::Specification.new do |spec|
   spec.name          = "traffiq"
   spec.version       = Traffiq::VERSION
-  spec.authors       = ["Nicolás Hock Isaza"]
-  spec.email         = ["nhocki@gmail.com"]
-  spec.summary       = %q{TODO: Write a short summary. Required.}
-  spec.description   = %q{TODO: Write a longer description. Optional.}
+  spec.authors       = ["Ride"]
+  spec.email         = ["nicolas@ride.com"]
+  spec.summary       = %q{Simple queue helpers for Ride.}
+  spec.description   = %q{Simple queue helpers for Ride.}
   spec.homepage      = ""
   spec.license       = "MIT"
 
@@ -18,6 +18,7 @@ Gem::Specification.new do |spec|
   spec.test_files    = spec.files.grep(%r{^(test|spec|features)/})
   spec.require_paths = ["lib"]
 
+  spec.add_dependency 'bunny', '~> 1.6.3'
   spec.add_development_dependency "bundler", "~> 1.7"
   spec.add_development_dependency "rake", "~> 10.0"
 end
