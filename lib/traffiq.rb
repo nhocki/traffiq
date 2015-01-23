@@ -1,5 +1,5 @@
+require "traffiq/errors"
+require "traffiq/amqp"
 require "traffiq/version"
 
-module Traffiq
-  # Your code goes here...
-end
+module Traffiq ; end
