@@ -28,6 +28,27 @@ producer and the consumer need to agree on the exchange options.
 
 Queues will be created with `durable: true, auto_delete: false`.
 
+## Test Helpers
+
+`traffiq` comes with some test helpers for RabbitMQ integration tests. Notice
+that when using these helpers you *must* have a RabbitMQ server running.
+
+To use them, you can do the following:
+
+```ruby
+# test_helper.rb
+
+require 'traffiq/test_helpers'
+include Traffiq::TestHelpers
+
+queue, amqp = setup_amqp_queue(server_url, exchange_name, routing_key)
+
+amqp.publish(routing_key, { tony: 'montana' }.to_json)
+
+last_amqp_queue_message(queue) # => { 'tony' => 'montana' }
+```
+
+
 ## Installation
 
 Add this line to your application's Gemfile:
