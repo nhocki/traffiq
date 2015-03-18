@@ -1,5 +1,10 @@
 # Changelog
 
+## Version 1.1.0 to 1.2.0 (Mar 18)
+
+* Allow clients to specify a block to be called when an uncaught exception happens
+in a consumer.
+
 ## Version 1.0.1 to 1.1.0 (Feb 4)
 
 * Adding AMQP test helpers (d707a1e).
