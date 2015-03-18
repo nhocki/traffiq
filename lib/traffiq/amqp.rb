@@ -9,6 +9,10 @@ module Traffiq
       @channel = @conn.create_channel
     end
 
+    def on_uncaught_exception(&block)
+      @channel.on_uncaught_exception(&block)
+    end
+
     def define_exchange(exchange_name, options = {})
       options = {
         durable: true,
