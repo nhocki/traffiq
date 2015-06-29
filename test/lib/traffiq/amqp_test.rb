@@ -4,6 +4,8 @@ module Traffiq
   class AMQPTest < Minitest::Spec
     let(:queue_url) { ENV['QUEUE_URL'] || "amqp://guest:guest@localhost:55672" }
     let(:amqp) { ::Traffiq::AMQP.new(queue_url) }
+    let(:payload) {{ payload: :goes_here }}
+    let(:json_payload) { '{"payload":"goes_here"}' }
 
     after do
       amqp.close
@@ -37,9 +39,6 @@ module Traffiq
     end
 
     describe "#publish" do
-      let(:payload) {{ payload: :goes_here }}
-      let(:json_payload) { '{"payload":"goes_here"}' }
-
       context "without an exchange" do
         it "raises an error" do
           assert_raises ::Traffiq::NoExchangeError do
@@ -63,16 +62,39 @@ module Traffiq
     end
 
     describe "#subscribe" do
+      let(:noop) {  lambda{ |_,_,_| }}
       context "without an exchange" do
         it "raises an error" do
           assert_raises ::Traffiq::NoExchangeError do
-            amqp.subscribe('routing_key')
+            amqp.subscribe('routing_key', &noop)
           end
         end
       end
 
       context "with an exchange" do
-        it "binds to a queue"
+        before do
+          amqp.define_exchange('traffiq_test')
+        end
+
+        it "binds to a routing key" do
+          amqp.subscribe('routing_key', &noop)
+          assert_equal 1, amqp.queues.length
+
+          queue = amqp.queues['routing_key']
+          refute_nil queue
+          assert_equal 'routing_key', queue.name
+        end
+
+        it "executes the block with the payload when something is published" do
+          amqp.subscribe('routing_key') do |delivery_info, metadata, q_payload|
+            refute_nil delivery_info
+            refute_nil metadata
+            refute_nil q_payload
+            assert_equal json_payload, q_payload
+          end
+
+          amqp.publish('test_routing_key', payload)
+        end
       end
     end
   end

@@ -19,6 +19,10 @@ module Traffiq
       @channel.exchanges
     end
 
+    def queues
+      @channel.queues
+    end
+
     def on_uncaught_exception(&block)
       @channel.on_uncaught_exception(&block)
     end
