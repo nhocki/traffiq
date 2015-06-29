@@ -3,7 +3,7 @@ module Traffiq
     def setup_amqp_queue(url, exchange_name, routing_key)
       amqp = Traffiq::AMQP.new(url)
       amqp.define_exchange(exchange_name)
-      queue = amqp.queues[routing_key]
+      queue = amqp.bind_queue(routing_key)
       queue.purge
       return queue, amqp
     end

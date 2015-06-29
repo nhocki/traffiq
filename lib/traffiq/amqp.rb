@@ -34,6 +34,18 @@ module Traffiq
       @exchange = @channel.topic(exchange_name, options)
     end
 
+    def bind_queue(routing_key, options = {})
+      raise Traffiq::NoExchangeError.new if @exchange.nil?
+
+      options = {
+        durable: true,
+        auto_delete: false,
+      }.merge(options)
+
+      @channel.queue(routing_key, options)
+              .bind(@exchange, routing_key: routing_key)
+    end
+
     def subscribe(routing_key, options = {}, &block)
       q = bind_queue(routing_key)
       options = options.merge(manual_ack: true)
@@ -52,20 +64,6 @@ module Traffiq
     def close
       @channel.close
       @conn.close
-    end
-
-    private
-
-    def bind_queue(routing_key, options = {})
-      raise Traffiq::NoExchangeError.new if @exchange.nil?
-
-      options = {
-        durable: true,
-        auto_delete: false,
-      }.merge(options)
-
-      @channel.queue(routing_key, options)
-              .bind(@exchange, routing_key: routing_key)
     end
   end
 end

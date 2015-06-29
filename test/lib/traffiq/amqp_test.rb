@@ -5,6 +5,7 @@ module Traffiq
     let(:queue_url) { ENV['QUEUE_URL'] || "amqp://guest:guest@localhost:55672" }
     let(:amqp) { ::Traffiq::AMQP.new(queue_url) }
     let(:payload) {{ payload: :goes_here }}
+    let(:routing_key) { 'routing_key' }
     let(:json_payload) { '{"payload":"goes_here"}' }
 
     after do
@@ -38,11 +39,35 @@ module Traffiq
       end
     end
 
+    describe "#bind_queue" do
+      context "without an exchange" do
+        it "raises an error" do
+          assert_raises ::Traffiq::NoExchangeError do
+            amqp.bind_queue(routing_key)
+          end
+        end
+      end
+
+      context "with an exchange" do
+        before do
+          amqp.define_exchange('traffiq_test')
+        end
+
+        it "creates a queue" do
+          queue = amqp.bind_queue(routing_key)
+          refute_nil queue
+
+          assert_equal 1, amqp.queues.length
+          assert_equal queue, amqp.queues[routing_key]
+        end
+      end
+    end
+
     describe "#publish" do
       context "without an exchange" do
         it "raises an error" do
           assert_raises ::Traffiq::NoExchangeError do
-            amqp.publish('routing_key', payload)
+            amqp.publish(routing_key, payload)
           end
         end
       end
@@ -66,7 +91,7 @@ module Traffiq
       context "without an exchange" do
         it "raises an error" do
           assert_raises ::Traffiq::NoExchangeError do
-            amqp.subscribe('routing_key', &noop)
+            amqp.subscribe(routing_key, &noop)
           end
         end
       end
@@ -77,16 +102,16 @@ module Traffiq
         end
 
         it "binds to a routing key" do
-          amqp.subscribe('routing_key', &noop)
+          amqp.subscribe(routing_key, &noop)
           assert_equal 1, amqp.queues.length
 
-          queue = amqp.queues['routing_key']
+          queue = amqp.queues[routing_key]
           refute_nil queue
-          assert_equal 'routing_key', queue.name
+          assert_equal routing_key, queue.name
         end
 
         it "executes the block with the payload when something is published" do
-          amqp.subscribe('routing_key') do |delivery_info, metadata, q_payload|
+          amqp.subscribe(routing_key) do |delivery_info, metadata, q_payload|
             refute_nil delivery_info
             refute_nil metadata
             refute_nil q_payload
