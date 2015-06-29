@@ -2,11 +2,21 @@ require 'bunny'
 
 module Traffiq
   class AMQP
+    attr_reader :exchange
+
     def initialize(queue_url)
       @conn = Bunny.new(queue_url)
       @conn.start
 
       @channel = @conn.create_channel
+    end
+
+    def connected?
+      @conn.connected? && @channel.open?
+    end
+
+    def exchanges
+      @channel.exchanges
     end
 
     def on_uncaught_exception(&block)
