@@ -2,7 +2,6 @@ require "traffiq/errors"
 require "traffiq/amqp"
 require "traffiq/version"
 
-require 'oj'
-Oj.default_options = {:mode => :compat }
+require 'multi_json'
 
 module Traffiq ; end

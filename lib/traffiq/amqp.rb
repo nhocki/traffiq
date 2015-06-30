@@ -58,7 +58,7 @@ module Traffiq
 
     def publish(routing_key, arguments = {})
       raise Traffiq::NoExchangeError.new if @exchange.nil?
-      @exchange.publish(Oj.dump(arguments), routing_key: routing_key, persistent: true)
+      @exchange.publish(MultiJson.dump(arguments), routing_key: routing_key, persistent: true)
     end
 
     def close
