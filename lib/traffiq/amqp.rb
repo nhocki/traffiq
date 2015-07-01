@@ -56,9 +56,10 @@ module Traffiq
       end
     end
 
-    def publish(routing_key, arguments = {})
+    def publish(routing_key, payload = {}, options = {})
       raise Traffiq::NoExchangeError.new if @exchange.nil?
-      @exchange.publish(MultiJson.dump(arguments), routing_key: routing_key, persistent: true)
+      bind_queue(routing_key) if options[:bind_to_queue]
+      @exchange.publish(MultiJson.dump(payload), routing_key: routing_key, persistent: true)
     end
 
     def close
