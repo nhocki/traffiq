@@ -1,15 +1,15 @@
-# dependencies:
-#   post:
-#     - npm install -g dredd
+## Ride/Traffiq
 
 machine:
-  environment:
-    QUEUE_URL: amqp://guest:guest@127.0.0.1:5672
-  ruby:
-    version: 2.2.2
   services:
-    - rabbitmq-server
+    - docker
+
+dependencies:
+  override:
+    - docker info
+    - docker build -t ride/traffiq .
 
 test:
   override:
-    - bundle exec rake test
+    - docker run -d --name amqp rabbitmq; sleep 5
+    - docker run --link amqp:amqp -e QUEUE_URL=amqp://guest:guest@amqp:5672 ride/traffiq

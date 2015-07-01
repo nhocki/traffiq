@@ -1,0 +1,11 @@
+traffiq:
+  build: .
+  links:
+    - amqp
+  environment:
+    - QUEUE_URL=amqp://guest:guest@amqp:5672
+
+amqp:
+  image: rabbitmq:3-management
+  ports:
+    - "15672:15672"
