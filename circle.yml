@@ -1,0 +1,11 @@
+machine:
+  environment:
+    QUEUE_URL: amqp://guest:guest@127.0.0.1:5672
+  ruby:
+    version: 2.2.2
+  services:
+    - rabbitmq-server
+
+test:
+  override:
+    - bundle exec rake test

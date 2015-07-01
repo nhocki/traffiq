@@ -2,11 +2,25 @@ require 'bunny'
 
 module Traffiq
   class AMQP
+    attr_reader :exchange
+
     def initialize(queue_url)
       @conn = Bunny.new(queue_url)
       @conn.start
 
       @channel = @conn.create_channel
+    end
+
+    def connected?
+      @conn.connected? && @channel.open?
+    end
+
+    def exchanges
+      @channel.exchanges
+    end
+
+    def queues
+      @channel.queues
     end
 
     def on_uncaught_exception(&block)
@@ -21,7 +35,7 @@ module Traffiq
     end
 
     def bind_queue(routing_key, options = {})
-      raise Traffiq::NoExchageError.new if @exchange.blank?
+      raise Traffiq::NoExchangeError.new if @exchange.nil?
 
       options = {
         durable: true,
@@ -43,8 +57,8 @@ module Traffiq
     end
 
     def publish(routing_key, arguments = {})
-      raise Traffiq::NoExchangeError.new if @exchange.blank?
-      @exchange.publish(arguments.to_json, routing_key: routing_key, persistent: true)
+      raise Traffiq::NoExchangeError.new if @exchange.nil?
+      @exchange.publish(MultiJson.dump(arguments), routing_key: routing_key, persistent: true)
     end
 
     def close
