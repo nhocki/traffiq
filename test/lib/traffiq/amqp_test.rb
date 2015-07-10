@@ -84,6 +84,17 @@ module Traffiq
             once
           amqp.publish('test_routing_key', payload)
         end
+
+        it "doesn't bind to a queue by default" do
+          amqp.publish('test_routing_key', payload)
+          assert_empty amqp.queues
+        end
+
+        it "binds to a queue if you want it to" do
+          amqp.publish('test_routing_key', payload, bind_to_queue: true)
+          refute_empty amqp.queues
+          refute_nil amqp.queues['test_routing_key']
+        end
       end
     end
 
