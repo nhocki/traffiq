@@ -1,8 +1,8 @@
 # Changelog
 
-## Version 1.3.0 (Unreleased)
+## Version 1.3.0 (July 10)
 
-* Allow publishers to bind queues on publish even if no consumers are up.
+* Allow publishers to bind queues on publish even if no consumers are up (9016226).
 
 ## Version 1.1.0 to 1.2.0 (Mar 18)
 
