@@ -1,5 +1,7 @@
 # Traffiq
 
+[![Circle CI](https://circleci.com/gh/ride/traffiq.svg?style=svg)](https://circleci.com/gh/ride/traffiq)
+
 `Traffiq` helps you with your queues so you don't have to.
 
 ![Boston Traffic](http://statescoop.com/wp-content/uploads/2014/04/boston-traffic.jpg)
