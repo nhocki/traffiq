@@ -45,7 +45,7 @@ queues created by temporary proccesses.
 ```ruby
 amqp = Traffiq::AMQP.new("server")
 amqp.publish('routing_key', payload)
-amqp.queues['routing_key] # => nil
+amqp.queues['routing_key'] # => nil
 
 amqp.publish('routing_key', payload, bind_to_queue: true)
 amqp.queues['routing_key'] # => Bunny::Queue
