@@ -14,7 +14,7 @@ For now only AMQP is supported with *topic* exchanges.
   # consumer.rb
   amqp = Traffiq::AMQP.new("user:password@rabbit-server.com")
   amqp.define_exchange('events', durable: true)
-  amqp.subscribe('routing_key', options) do |delivery_info, metadata, payload| 
+  amqp.subscribe('routing_key', options) do |delivery_info, metadata, payload|
     puts delivery_info, metadata, payload
   end
 
@@ -68,7 +68,7 @@ include Traffiq::TestHelpers
 
 queue, amqp = setup_amqp_queue(server_url, exchange_name, routing_key)
 
-amqp.publish(routing_key, { tony: 'montana' }.to_json)
+amqp.publish(routing_key, { tony: 'montana' })
 
 last_amqp_queue_message(queue) # => { 'tony' => 'montana' }
 ```
