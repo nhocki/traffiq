@@ -10,7 +10,7 @@ Gem::Specification.new do |spec|
   spec.email         = ["nicolas@ride.com"]
   spec.summary       = %q{Simple queue helpers for Ride.}
   spec.description   = %q{Simple queue helpers for Ride.}
-  spec.homepage      = ""
+  spec.homepage      = "https://github.com/ride/traffiq"
   spec.license       = "MIT"
 
   spec.files         = `git ls-files -z`.split("\x0")
