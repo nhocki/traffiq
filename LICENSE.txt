@@ -1,4 +1,4 @@
-Copyright (c) 2015 Nicolás Hock Isaza
+Copyright (c) 2015 Ride Group Inc and contributors.
 
 MIT License
 

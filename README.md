@@ -78,7 +78,6 @@ last_amqp_queue_message(queue) # => { 'tony' => 'montana' }
 Add this line to your application's Gemfile:
 
 ```ruby
-source 'user:password@gem.fury.io/ride'
 gem 'traffiq'
 ```
 

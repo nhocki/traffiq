@@ -2,8 +2,7 @@ require 'test_helper'
 
 module Traffiq
   class AMQPTest < Minitest::Spec
-    let(:default_port) { ENV['BOXEN_HOME'] ? 55672 : 5672 }
-    let(:queue_url) { ENV['QUEUE_URL'] || "amqp://guest:guest@localhost:#{default_port}" }
+    let(:queue_url) { ENV['QUEUE_URL'] || ENV['BOXEN_RABBITMQ_URL'] || "amqp://guest:guest@localhost:5672" }
     let(:amqp) { ::Traffiq::AMQP.new(queue_url) }
     let(:payload) {{ payload: :goes_here }}
     let(:routing_key) { 'routing_key' }
